@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life = ∫ Sigmoid</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 60px 80px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        .equation {
+            font-size: 42px;
+            margin: 30px 0;
+            line-height: 1.8;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-top: 40px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Life Reimagined</h1>
+        <div class="equation">
+            \[\text{Life} = \int_{\text{birth}}^{\text{death}} \sigma(t) \, dt\]
+        </div>
+        <div class="subtitle">where σ(t) = 1/(1 + e^(-k(t-t₀))) is your happiness sigmoid</div>
+    </div>
+</body>
+</html>
