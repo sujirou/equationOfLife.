@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life: Animated Equation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 30px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+        }
+        .header h1 {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .equation {
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        .control-group input {
+            width: 100px;
+            padding: 8px 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .control-group input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+        button {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .canvas-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .info {
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Life: Sigmoid + Noise</h1>
+        <div class="equation">
+            \[\text{Life} = \int_{\text{birth}}^{\text{death}} [\sigma(t) + \text{noise}(t)] \, dt\]
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Steepness (k):</label>
+            <input type="number" id="steepness" value="0.15" step="0.05" min="0.05" max="0.5">
+        </div>
+        <div class="control-group">
+            <label>Peak Time (%):</label>
+            <input type="number" id="peakTime" value="50" step="5" min="20" max="80">
+        </div>
+        <div class="control-group">
+            <label>Noise Level:</label>
+            <input type="number" id="noiseLevel" value="0.15" step="0.05" min="0" max="0.5">
+        </div>
+        <button onclick="resetAnimation()">Reset</button>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="info">
+        <p>Watch the sigmoid curve animate with real-time fluctuations. Adjust parameters to see different life trajectories!</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = Math.min(900, window.innerWidth - 40);
+        canvas.height = 500;
+
+        let animationProgress = 0;
+        const animationSpeed = 0.01;
+        let animationId;
+
+        function sigmoid(t, k, t0) {
+            return 1 / (1 + Math.exp(-k * (t - t0)));
+        }
+
+        function getNoise(t, amplitude) {
+            return (Math.sin(t * 12) * 0.5 + Math.sin(t * 7.3) * 0.3 + Math.sin(t * 19) * 0.2) * amplitude;
+        }
+
+        function drawGraph() {
+            const k = parseFloat(document.getElementById('steepness').value);
+            const peakTime = parseFloat(document.getElementById('peakTime').value) / 100;
+            const noiseLevel = parseFloat(document.getElementById('noiseLevel').value);
+
+            const padding = 60;
+            const graphWidth = canvas.width - 2 * padding;
+            const graphHeight = canvas.height - 2 * padding;
+
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(padding, padding);
+            ctx.stroke();
+
+            // Axis labels
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('birth', padding, canvas.height - 20);
+            ctx.fillText('death', canvas.width - padding, canvas.height - 20);
+            ctx.textAlign = 'right';
+            ctx.fillText('happiness', 20, padding - 10);
+
+            // Draw shaded area under curve
+            ctx.fillStyle = 'rgba(102, 126, 234, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+
+            for (let i = 0; i <= animationProgress; i += 0.01) {
+                const sigValue = sigmoid(i, k, peakTime);
+                const noise = getNoise(i, noiseLevel);
+                const y = sigValue + noise;
+                const x = padding + (i * graphWidth);
+                const screenY = canvas.height - padding - (Math.max(0, Math.min(1, y)) * graphHeight);
+                ctx.lineTo(x, screenY);
+            }
+
+            ctx.lineTo(padding + (animationProgress * graphWidth), canvas.height - padding);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw curve
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            for (let i = 0; i <= animationProgress; i += 0.01) {
+                const sigValue = sigmoid(i, k, peakTime);
+                const noise = getNoise(i, noiseLevel);
+                const y = sigValue + noise;
+                const x = padding + (i * graphWidth);
+                const screenY = canvas.height - padding - (Math.max(0, Math.min(1, y)) * graphHeight);
+
+                if (i === 0) {
+                    ctx.moveTo(x, screenY);
+                } else {
+                    ctx.lineTo(x, screenY);
+                }
+            }
+            ctx.stroke();
+
+            // Draw sigmoid trend (dashed)
+            ctx.strokeStyle = 'rgba(118, 75, 162, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+
+            for (let i = 0; i <= animationProgress; i += 0.01) {
+                const sigValue = sigmoid(i, k, peakTime);
+                const x = padding + (i * graphWidth);
+                const screenY = canvas.height - padding - (sigValue * graphHeight);
+
+                if (i === 0) {
+                    ctx.moveTo(x, screenY);
+                } else {
+                    ctx.lineTo(x, screenY);
+                }
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw progress indicator
+            if (animationProgress < 1) {
+                const currentX = padding + (animationProgress * graphWidth);
+                ctx.fillStyle = '#764ba2';
+                ctx.beginPath();
+                ctx.arc(currentX, canvas.height - padding, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Legend
+            ctx.fillStyle = '#667eea';
+            ctx.fillRect(canvas.width - 220, padding + 10, 12, 12);
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('σ(t) + noise(t)', canvas.width - 200, padding + 20);
+
+            ctx.strokeStyle = 'rgba(118, 75, 162, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 220, padding + 50);
+            ctx.lineTo(canvas.width - 200, padding + 50);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#333';
+            ctx.fillText('σ(t) trend', canvas.width - 200, padding + 55);
+        }
+
+        function animate() {
+            if (animationProgress < 1) {
+                animationProgress += animationSpeed;
+                if (animationProgress > 1) animationProgress = 1;
+            }
+
+            drawGraph();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function resetAnimation() {
+            animationProgress = 0;
+            cancelAnimationFrame(animationId);
+            animate();
+        }
+
+        animate();
+    </script>
+</body>
+</html>
