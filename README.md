@@ -1,6 +1,7 @@
 what if life was a calculus equation? 😶
 
 <img width="592" height="418" alt="image" src="https://github.com/user-attachments/assets/fea63710-f564-4725-9f6c-2d01208af085" />
+<img width="485" height="218" alt="image" src="https://github.com/user-attachments/assets/e211b50f-8178-48bc-84d7-097d6df2c0b8" />
 
 # Life: Sigmoid + Noise 📈
 
