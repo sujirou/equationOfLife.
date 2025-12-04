@@ -4,7 +4,7 @@ this was whipped from a rather passive-aggressive, albeit interesting banter<br>
 
 [the actual banter lol](https://www.facebook.com/thesciencenerdz/posts/pfbid02qE11Sy84QLsU5ezEPk9QYmWSDTJ3zsSDhrvPKXJLmQs3Umd5M9HFkxsyPjukYfDvl?comment_id=819625527520860&__cft__[0]=AZX4FV2nH517pAHF4kL0UqWkjzhQRTWFEDOdqafLSF52imaSv4pOQy3Co-eedEQ4K_-ZaxgY9S1tuxp8nsyhfcpy6P94cRcNXOQDqBCkJjtW8JlICkWamGBnNJx8YD1sIzvimojAconqnkKMgg8pca6mWSAygo7V2-ubv4jl7sDoMA&__tn__=R]-R)
 
-
+in any case:
 
 <img width="592" height="418" alt="image" src="https://github.com/user-attachments/assets/fea63710-f564-4725-9f6c-2d01208af085" />
 <img width="485" height="218" alt="image" src="https://github.com/user-attachments/assets/e211b50f-8178-48bc-84d7-097d6df2c0b8" />
