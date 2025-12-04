@@ -1,5 +1,9 @@
 what if life was a calculus equation? 😶
 
+this was whipped from a rather passive-aggressive, albeit interesting banter with a facebook user in the comments section of [The Science Nerds's Facebook Post] (https://www.facebook.com/thesciencenerdz/posts/pfbid02qE11Sy84QLsU5ezEPk9QYmWSDTJ3zsSDhrvPKXJLmQs3Umd5M9HFkxsyPjukYfDvl) lol
+
+
+
 <img width="592" height="418" alt="image" src="https://github.com/user-attachments/assets/fea63710-f564-4725-9f6c-2d01208af085" />
 <img width="485" height="218" alt="image" src="https://github.com/user-attachments/assets/e211b50f-8178-48bc-84d7-097d6df2c0b8" />
 
