@@ -1,6 +1,6 @@
 what if life was a calculus equation? 😶
 
-this was whipped from a rather passive-aggressive, albeit interesting banter with a facebook user in the comments section of [The Science Nerds's Facebook Post] (https://www.facebook.com/thesciencenerdz/posts/pfbid02qE11Sy84QLsU5ezEPk9QYmWSDTJ3zsSDhrvPKXJLmQs3Umd5M9HFkxsyPjukYfDvl) lol
+this was whipped from a rather passive-aggressive, albeit interesting banter with a facebook user in the comments section of [The Science Nerds's Facebook Post](https://www.facebook.com/thesciencenerdz/posts/pfbid02qE11Sy84QLsU5ezEPk9QYmWSDTJ3zsSDhrvPKXJLmQs3Umd5M9HFkxsyPjukYfDvl)
 
 
 
